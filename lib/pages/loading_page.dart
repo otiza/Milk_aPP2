@@ -16,7 +16,7 @@ class _LoadinPageState extends State<LoadinPage> {
   @override
   void initState() {
     super.initState();
-    _checkAuthStatus();
+    
   }
 
   Future<void> _checkAuthStatus() async {
@@ -31,7 +31,12 @@ class _LoadinPageState extends State<LoadinPage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ErrorPage(error: error.message)));
+                builder: (context) => ErrorPage(error: error.message))).then((value) =>{
+                  setState(() {
+          _isLoading = false;
+        })
+                });
+        
       });
 
       if (sessionIsValid) {
@@ -53,6 +58,7 @@ class _LoadinPageState extends State<LoadinPage> {
 
   @override
   Widget build(BuildContext context) {
+    _checkAuthStatus();
     return Scaffold(
       body: Center(
         child: _isLoading ? const CircularProgressIndicator() : const LoginPage(),
